@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-moengage-core" version="8.4.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+	<name>MoECordova</name>
+	<description>MoEngage SDK Plugin</description>
+	<preference name="APP_ID" />
+	<preference name="DATA_CENTER" />
+	<js-module name="MoECordova" src="www/MoECordova.js">
+		<clobbers target="MoECordova"/>
+	</js-module>
+	<js-module name="MoEConstants" src="www/MoEConstants.js">
+		<clobbers target="MoEConstants"/>
+	</js-module>
+	<js-module name="MoEJsonProvider" src="www/MoEJsonProvider.js">
+		<clobbers target="MoEJsonProvider"/>
+	</js-module>
+
+    <!-- Android Platform -->
+	<platform name="android">
+		<hook type="after_prepare" src="www/android_app_name.js" />
+		<hook type="after_plugin_add" src="www/android_app_name.js"/>
+        <source-file src="src/android/moengage.xml" target-dir="res/values" />
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="MoEngage">
+				<param name="android-package" value="com.moengage.cordova.MoECordova"/>
+			</feature>
+		</config-file>
+		<config-file parent="/*" target="res/values/moengage.xml">
+            <string name="moe_app_id">$APP_ID</string>
+            <string name="moe_data_center">$DATA_CENTER</string>
+		</config-file>
+		<config-file parent="/*" target="AndroidManifest.xml"/>
+		<framework custom="true" src="src/android/build-extras.gradle" type="gradleReference"/>
+   		<resource-file src="src/build-extras.gradle" target="../../build-extras.gradle"/>
+		<source-file src="src/android/com/moengage/cordova/MoEngageSampleApplication.java" target-dir="src/com/moengage/cordova"/>
+		<source-file src="src/android/com/moengage/cordova/MoECordova.java" target-dir="src/com/moengage/cordova"/>
+		<source-file src="src/android/com/moengage/cordova/EventEmitterImpl.java" target-dir="src/com/moengage/cordova"/>
+		<source-file src="src/android/com/moengage/cordova/MoEConstants.java" target-dir="src/com/moengage/cordova"/>
+		<source-file src="src/android/com/moengage/cordova/MoEInitializer.java" target-dir="src/com/moengage/cordova"/>
+		<source-file src="src/android/com/moengage/cordova/MoECordovaHelper.java" target-dir="src/com/moengage/cordova"/>
+	</platform>
+	<!-- iOS Platform -->
+	<platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="MoEngage">
+                <param name="ios-package" value="MoEngageCordova"/>
+            </feature>
+        </config-file>
+        <config-file target="*-Info.plist" parent="MoengageAppID">
+            <string>$APP_ID</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="MoengageDataCenter">
+            <string>$DATA_CENTER</string>
+        </config-file>
+        <!-- Cordova specific files -->
+        <header-file src="src/ios/MoEngage/AppDelegate+MoEngage.h" />
+        <source-file src="src/ios/MoEngage/AppDelegate+MoEngage.m" />
+        <header-file src="src/ios/MoEngage/MoEngageCordova.h" />
+        <source-file src="src/ios/MoEngage/MoEngageCordova.m" />
+        <header-file src="src/ios/MoEngage/MoEngageCordovaConstants.h" />
+        <source-file src="src/ios/MoEngage/MoEngageCordovaConstants.m" />
+
+        <!-- MoEngage iOS SDK files -->
+        <podspec>
+              <config>
+                <source url="https://github.com/CocoaPods/Specs.git"/>
+              </config>
+              <pods use-frameworks="true">
+                  <pod  name="MoEngagePluginBase" spec="~> 4.2.0"/>
+              </pods>
+        </podspec>
+    </platform>
+</plugin>

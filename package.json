@@ -1,0 +1,23 @@
+{
+  "name": "cordova-moengage-core",
+  "version": "8.4.0",
+  "description": "MoEngage Cordova SDK",
+  "main": "MoECordova.js",
+  "author": "MoEngage Inc.",
+  "license": "ISC",
+  "cordova": {
+    "id": "cordova-moengage-core",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "moengage": {
+    "moduleName": "core"
+  }
+}

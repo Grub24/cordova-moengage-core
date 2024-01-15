@@ -18,6 +18,44 @@
 
 @implementation AppDelegate (MoEngageCordova)
 
+
+- (BOOL)application:(UIApplication *)application swizzledDidFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [self application:application swizzledDidFinishLaunchingWithOptions:launchOptions];
+    NSString* plistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
+    NSDictionary *myDict = [[NSDictionary alloc] initWithContentsOfFile: plistPath];
+    NSString* appid = myDict[@"MoengageAppID"];
+    NSString* datacenter = myDict[@"MoengageDataCenter"];
+
+    MoEngageDataCenter dc = MoEngageDataCenterData_center_01;
+    
+    NSArray *items = @[@"DATA_CENTER_1", @"DATA_CENTER_2", @"DATA_CENTER_3",@"DATA_CENTER_4",@"DATA_CENTER_5"];
+    int item = [items indexOfObject:datacenter];
+    switch (item) {
+        case 0:
+            dc = MoEngageDataCenterData_center_01;
+           break;
+        case 1:
+            dc = MoEngageDataCenterData_center_02;
+           break;
+        case 2:
+            dc = MoEngageDataCenterData_center_03;
+           break;
+        case 3:
+            dc = MoEngageDataCenterData_center_04;
+           break;
+        default:
+            dc = MoEngageDataCenterData_center_05;
+           break;
+    }
+    NSLog(@"DDDDDataCenter: %@",datacenter);    // dictionary lookup
+    NSLog(@"MMMMMoengageAppID: %@",appid);    // dictionary lookup
+    MoEngageSDKConfig *sdkConfig = [[MoEngageSDKConfig alloc] initWithAppId:appid dataCenter:dc];
+    sdkConfig.enableLogs = true;
+    sdkConfig.appGroupID = @"group.com.group24.mobileapp.MoEngage";
+
+    [self initializeDefaultSDKConfig:sdkConfig andLaunchOptions:launchOptions];
+}
+
 #pragma mark- Application LifeCycle methods
 
 - (void)initializeDefaultSDKConfig:(MoEngageSDKConfig*)sdkConfig andLaunchOptions:(NSDictionary*)launchOptions {

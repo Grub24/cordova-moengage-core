@@ -1,0 +1,10 @@
+
+1- first add ios
+2- add plugin
+
+IOS ERROR after add ios platform 
+error: RPC failed; curl 18 transfer closed with outstanding read data remaining
+
+pod repo remove trunk
+sudo gem install cocoapods
+pod install 

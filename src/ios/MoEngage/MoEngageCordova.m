@@ -14,6 +14,7 @@
 
 @implementation MoEngageCordova
 
+
 - (void)init:(CDVInvokedUrlCommand*)command;
 {
     [self.commandDelegate runInBackground:^ {

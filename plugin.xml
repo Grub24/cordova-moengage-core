@@ -2,8 +2,8 @@
 <plugin id="cordova-moengage-core" version="8.4.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
 	<name>MoECordova</name>
 	<description>MoEngage SDK Plugin</description>
-	<preference name="APP_ID" />
-	<preference name="DATA_CENTER" />
+	<preference name="MOE_APP_ID" />
+	<preference name="MOE_DATA_CENTER" />
 	<js-module name="MoECordova" src="www/MoECordova.js">
 		<clobbers target="MoECordova"/>
 	</js-module>
@@ -25,8 +25,8 @@
 			</feature>
 		</config-file>
 		<config-file parent="/*" target="res/values/moengage.xml">
-            <string name="moe_app_id">$APP_ID</string>
-            <string name="moe_data_center">$DATA_CENTER</string>
+            <string name="moe_app_id">$MOE_APP_ID</string>
+            <string name="moe_data_center">$MOE_DATA_CENTER</string>
 		</config-file>
 		<config-file parent="/*" target="AndroidManifest.xml"/>
 		<framework custom="true" src="src/android/build-extras.gradle" type="gradleReference"/>
@@ -43,14 +43,21 @@
         <config-file target="config.xml" parent="/*">
             <feature name="MoEngage">
                 <param name="ios-package" value="MoEngageCordova"/>
+                <param name="onload" value="true" />
             </feature>
+            <plugin name="MoEngageCordova" value="MoEngageCordova"/>
         </config-file>
+
+
+
+
         <config-file target="*-Info.plist" parent="MoengageAppID">
-            <string>$APP_ID</string>
+            <string>$MOE_APP_ID</string>
         </config-file>
         <config-file target="*-Info.plist" parent="MoengageDataCenter">
-            <string>$DATA_CENTER</string>
+            <string>$MOE_DATA_CENTER</string>
         </config-file>
+		
         <!-- Cordova specific files -->
         <header-file src="src/ios/MoEngage/AppDelegate+MoEngage.h" />
         <source-file src="src/ios/MoEngage/AppDelegate+MoEngage.m" />
@@ -58,6 +65,7 @@
         <source-file src="src/ios/MoEngage/MoEngageCordova.m" />
         <header-file src="src/ios/MoEngage/MoEngageCordovaConstants.h" />
         <source-file src="src/ios/MoEngage/MoEngageCordovaConstants.m" />
+        <hook type="after_prepare" src="www/after_prepare_ios.js" />
 
         <!-- MoEngage iOS SDK files -->
         <podspec>

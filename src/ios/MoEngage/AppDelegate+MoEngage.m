@@ -18,9 +18,22 @@
 
 @implementation AppDelegate (MoEngageCordova)
 
+static AppDelegate* instance;
 
-- (BOOL)application:(UIApplication *)application swizzledDidFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [self application:application swizzledDidFinishLaunchingWithOptions:launchOptions];
++ (AppDelegate*) instance {
+    return instance;
+}
+
++ (void)load {
+        NSLog(@"MOENGE_G load");
+    Method original = class_getInstanceMethod(self, @selector(application:didFinishLaunchingWithOptions:));
+    Method swizzled = class_getInstanceMethod(self, @selector(application:swizzledMoeDidFinishLaunchingWithOptions:));
+    method_exchangeImplementations(original, swizzled);
+}
+
+- (BOOL)application:(UIApplication *)application swizzledMoeDidFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+        NSLog(@"MOENGE_G swizzled load");
+    [self application:application swizzledMoeDidFinishLaunchingWithOptions:launchOptions];
     NSString* plistPath = [[NSBundle mainBundle] pathForResource:@"Info" ofType:@"plist"];
     NSDictionary *myDict = [[NSDictionary alloc] initWithContentsOfFile: plistPath];
     NSString* appid = myDict[@"MoengageAppID"];
@@ -47,13 +60,20 @@
             dc = MoEngageDataCenterData_center_05;
            break;
     }
-    NSLog(@"DDDDDataCenter: %@",datacenter);    // dictionary lookup
-    NSLog(@"MMMMMoengageAppID: %@",appid);    // dictionary lookup
-    MoEngageSDKConfig *sdkConfig = [[MoEngageSDKConfig alloc] initWithAppId:appid dataCenter:dc];
-    sdkConfig.enableLogs = true;
-    sdkConfig.appGroupID = @"group.com.group24.mobileapp.MoEngage";
+    NSTimeInterval delayInSeconds = 5.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+    NSLog(@"Do some work");
+        NSLog(@"DDDDDataCenter: %@",datacenter);    // dictionary lookup
+        NSLog(@"MMMMMoengageAppID: %@",appid);    // dictionary lookup
+        MoEngageSDKConfig *sdkConfig = [[MoEngageSDKConfig alloc] initWithAppId:appid dataCenter:dc];
+        sdkConfig.enableLogs = true;
+        sdkConfig.appGroupID = @"group.com.group24.mobileapp.MoEngage";
 
-    [self initializeDefaultSDKConfig:sdkConfig andLaunchOptions:launchOptions];
+        [self initializeDefaultSDKConfig:sdkConfig andLaunchOptions:launchOptions];
+    });
+
+    return YES;
 }
 
 #pragma mark- Application LifeCycle methods

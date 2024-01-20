@@ -58,7 +58,7 @@
             <string>$MOE_DATA_CENTER</string>
         </config-file>
         <config-file target="*-Info.plist" parent="FirebaseAppDelegateProxyEnabled">
-            <string>NO</string>
+            <false/>
         </config-file>
 		
         <!-- Cordova specific files -->
